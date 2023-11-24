@@ -1,5 +1,10 @@
 targetScope = 'subscription'
 
+@allowed([
+    'uksouth'
+    'westeurope'
+  ]
+)
 param location string = 'uksouth'
 param vnetName string = 'bicep-VNET'
 param subnetName string = 'frontEnd'
@@ -29,7 +34,6 @@ module vnet 'vnet-module.bicep' = {
   params: {
     vnetLocation: location
     vnetName: vnetName
-    subnetName:subnetName
   }
 }
 

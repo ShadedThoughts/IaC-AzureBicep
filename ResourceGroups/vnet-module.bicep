@@ -1,7 +1,6 @@
 // Parameters and Decorators
-param vnetName string = 'bicep-VNET'
-param vnetLocation string = 'uksouth'
-param subnetName string = 'frontEnd'
+param vnetName string
+param vnetLocation string
 
 var vnetConfig = {
   vnetprefix: '10.0.0.0/16'
@@ -22,7 +21,7 @@ resource vnet 'Microsoft.Network/virtualNetworks@2023-04-01' = {
     }
     subnets: [
       {
-        name: subnetName
+        name: vnetConfig.subnet.name
         properties: {
           addressPrefix: vnetConfig.subnet.subnetPrefix
         }
@@ -30,3 +29,5 @@ resource vnet 'Microsoft.Network/virtualNetworks@2023-04-01' = {
     ]
   }
 }
+
+output subnetName string = vnetConfig.subnet.name
