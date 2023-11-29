@@ -5,8 +5,18 @@
 
 trigger: none
 
+name: Deploy Bicep files
+
 pool:
   vmImage: ubuntu-latest
+
+variables:
+  vmImageName: 'ubuntu-latest'
+
+  azureServiceConnection: '<your-connection-name>'
+  # resourceGroupName: 'exampleRG'
+  # location: '<your-resource-group-location>'
+  templateFile: './AzureAKS/main.bicep'
 
 steps:
 - task: AzureCLI@2
@@ -30,3 +40,12 @@ steps:
     templateLocation: 'Linked artifact'
     deploymentMode: 'Incremental'
 
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: 'iac-aad-deploy-dev'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      az --version 
+      az group create --name $(resourceGroupName) --location $(location)
+      az deployment group create --resource-group $(resourceGroupName) --template-file $(templateFile)
