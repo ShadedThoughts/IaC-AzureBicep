@@ -1,0 +1,32 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger: none
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: AzureCLI@2
+  displayName: Login to Azure CLI
+  inputs:
+    azureSubscription: 'MSDN(031e997d-b908-4dd0-9dba-c440758aec29)'
+    scriptType: 'pscore'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      az login -u dami.olayokun@etalopo.com -p P@ssw0rd+1001
+      az account set --subscription '031e997d-b908-4dd0-9dba-c440758aec29'
+
+- task: AzureResourceManagerTemplateDeployment@3
+  inputs:
+    deploymentScope: 'Resource Group'
+    azureResourceManagerConnection: 'iac-aad-deploy-dev'
+    subscriptionId: '031e997d-b908-4dd0-9dba-c440758aec29'
+    action: 'Create Or Update Resource Group'
+    resourceGroupName: 'bicep-rg'
+    location: 'UK South'
+    templateLocation: 'Linked artifact'
+    deploymentMode: 'Incremental'
+
