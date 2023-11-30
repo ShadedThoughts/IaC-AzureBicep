@@ -1,0 +1,33 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "value": "uksouth"
+    },
+    "vnetName": {
+      "value": "bicep-VNET"
+    },
+    "subnetName": {
+      "value": "frontEnd"
+    },
+    "localAdminName": {
+      "value": "adminpc"
+    },
+    "keyVaultSubscription": {
+      "value": "031e997d-b908-4dd0-9dba-c440758aec29"
+    },
+    "keyVaultResourceGroup": {
+      "value": "iac-rg-dev"
+    },
+    "keyVaultName": {
+      "value": "iac-keyv-dev"
+    },
+    "secretName": {
+      "value": "secretName"
+    },
+    "secretVersion": {
+      "value": "64a73bcbad2f453581f5f683bf30b8e2"
+    }
+  }
+}

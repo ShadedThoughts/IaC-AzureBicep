@@ -4,11 +4,11 @@ param vnetName string
 param subnetName string
 param vmSku string = 'Standard_D4s_v4'
 param vmOS string = '2019-Datacenter'
+param vmLocation string
 
 @secure()
 param localAdminPassword string
 
-var defaultLocation = resourceGroup().location
 var vmName = 'bicep-vm'
 var defaultVmNicName = '${vmName}-nic'
 var privateIPAllocationMethod = 'Dynamic'
@@ -19,7 +19,7 @@ resource vnet 'Microsoft.Network/virtualNetworks@2023-05-01' existing = {
 
 resource vmNic 'Microsoft.Network/networkInterfaces@2023-04-01' = {
   name: defaultVmNicName
-  location: defaultLocation
+  location: vmLocation
   properties: {
     ipConfigurations: [
       {
@@ -37,7 +37,7 @@ resource vmNic 'Microsoft.Network/networkInterfaces@2023-04-01' = {
 
 resource windowsVM 'Microsoft.Compute/virtualMachines@2023-03-01' = {
   name: vmName
-  location: defaultLocation
+  location: vmLocation
   properties: {
     hardwareProfile: {
       vmSize: vmSku

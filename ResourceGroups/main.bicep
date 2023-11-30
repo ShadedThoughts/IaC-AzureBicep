@@ -5,15 +5,18 @@ targetScope = 'subscription'
     'westeurope'
   ]
 )
-param location string = 'uksouth'
-param vnetName string = 'bicep-VNET'
-param subnetName string = 'frontEnd'
-param localAdminName string = 'adminpc'
+param location string
+param vnetName string
+param subnetName string
+param localAdminName string
 param deployResourceGroup bool = true
-param keyVaultSubscription string = '031e997d-b908-4dd0-9dba-c440758aec29'
-param keyVaultResourceGroup string = 'iac-rg-dev'
-param secretName string = 'secretName'
-param secretVersion string = '64a73bcbad2f453581f5f683bf30b8e2'
+param keyVaultSubscription string
+param keyVaultResourceGroup string
+param keyVaultName string
+param secretName string
+
+@secure()
+param secretVersion string
 
 // @secure()
 // param localAdminPassword string
@@ -24,13 +27,13 @@ resource rg 'Microsoft.Resources/resourceGroups@2023-07-01' = if (deployResource
 }
 
 resource kv 'Microsoft.KeyVault/vaults@2023-07-01' existing = {
-  name: 'iac-keyv-dev'
+  name: keyVaultName
   scope: resourceGroup(keyVaultSubscription, keyVaultResourceGroup)
 }
 
 module vnet 'vnet-module.bicep' = {
   scope: rg
-  name: 'vnet'
+  name: 'virtualNetwork'
   params: {
     vnetLocation: location
     vnetName: vnetName
@@ -39,8 +42,9 @@ module vnet 'vnet-module.bicep' = {
 
 module vm 'vm-module.bicep' = {
   scope: rg
-  name: 'VM'
+  name: 'virtualMachine'
   params: {
+    vmLocation: location
     localAdminName: localAdminName
     localAdminPassword: kv.getSecret(secretName, secretVersion)
     vnetName: vnetName
