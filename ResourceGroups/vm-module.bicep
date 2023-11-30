@@ -20,6 +20,9 @@ resource vnet 'Microsoft.Network/virtualNetworks@2023-05-01' existing = {
 resource vmNic 'Microsoft.Network/networkInterfaces@2023-04-01' = {
   name: defaultVmNicName
   location: vmLocation
+  dependsOn: [
+    vnet
+  ]
   properties: {
     ipConfigurations: [
       {
