@@ -5,8 +5,8 @@ targetScope = 'subscription'
     'westeurope'
   ]
 )
-param resourceGrp string
 param location string
+param resourceGrp string
 param vnetName string
 param subnetName string
 param localAdminName string
