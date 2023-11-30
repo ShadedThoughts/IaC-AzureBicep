@@ -5,26 +5,22 @@
 
 trigger: none
 
-name: Deploy Bicep files
+name: Deploy Azure Bastion Bicep files
 
 pool:
   vmImage: ubuntu-latest
 
-variables:
-  resourceGroup: 'bicep-rg'
-
-steps:
-
-- task: AzureResourceManagerTemplateDeployment@3
-  displayName: Deploy
-  inputs:
-    deploymentScope: 'Resource Group'
-    azureResourceManagerConnection: 'iac-aad-deploy-dev'
-    subscriptionId: '031e997d-b908-4dd0-9dba-c440758aec29'
-    action: 'Create Or Update Resource Group'
-    resourceGroupName: $(resourceGroup)
-    location: 'UK South'
-    templateLocation: 'Linked artifact'
-    csmFile: './ResourceGroups/main.bicep'
-    csmParametersFile: './ResourceGroups/main.parameters.json'
-    deploymentMode: 'Validation'
+jobs:
+  - job: Deploy
+    steps:
+    - task: AzureResourceManagerTemplateDeployment@3
+      displayName: Deploy
+      inputs:
+        deploymentScope: 'Subscription'
+        azureResourceManagerConnection: 'iac-aad-deploy-dev'
+        subscriptionId: '031e997d-b908-4dd0-9dba-c440758aec29'
+        location: 'UK South'
+        templateLocation: 'Linked artifact'
+        csmFile: './ResourceGroups/main.bicep'
+        csmParametersFile: './ResourceGroups/main.parameters.json'
+        deploymentMode: 'Validation'
