@@ -8,6 +8,9 @@ trigger: none
 pool:
   vmImage: ubuntu-latest
 
+variables:
+  RG: 'bicep-rg'
+
 jobs:
   - job: Deploy
     steps:
@@ -18,9 +21,20 @@ jobs:
           azureResourceManagerConnection: 'iac-aad-deploy-dev'
           subscriptionId: '031e997d-b908-4dd0-9dba-c440758aec29'
           action: 'Create Or Update Resource Group'
-          resourceGroupName: 'bicep-rg'
+          resourceGroupName: $(RG)
           location: 'UK South'
           templateLocation: 'Linked artifact'
           csmFile: './AzureBastion/main.bicep'
           csmParametersFile: './AzureBastion/main.parameters.json'
-          deploymentMode: 'Validation'
+          deploymentMode: 'Incremental'
+
+  - job: CleanUp
+    dependsOn: Deploy
+    steps:
+      - task: AzureCLI@2
+        displayName: 'Clean Up Resources'
+        inputs:
+          azureSubscription: 'iac-aad-deploy-dev'
+          scriptType: 'bash'
+          scriptLocation: 'inlineScript'
+          inlineScript: 'az group delete --name $(RG) --yes'
