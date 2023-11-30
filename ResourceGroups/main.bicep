@@ -5,6 +5,7 @@ targetScope = 'subscription'
     'westeurope'
   ]
 )
+param resourceGrp string
 param location string
 param vnetName string
 param subnetName string
@@ -22,7 +23,7 @@ param secretVersion string
 // param localAdminPassword string
 
 resource rg 'Microsoft.Resources/resourceGroups@2023-07-01' = if (deployResourceGroup) {
-  name: 'bicep-iac-rg'
+  name: resourceGrp
   location: location
 }
 
