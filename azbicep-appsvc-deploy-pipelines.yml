@@ -22,6 +22,7 @@ jobs:
           azureResourceManagerConnection: 'iac-aad-deploy-dev'
           subscriptionId: '$(SUB_ID)'
           action: 'Create Or Update Resource Group'
+          resourceGroupName: $(RG)
           location: '$(LOCATION)'
           templateLocation: 'Linked artifact'
           csmFile: './AzureAppService/main.bicep'
