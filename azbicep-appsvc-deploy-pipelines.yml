@@ -16,6 +16,7 @@ jobs:
   - job: Deploy
     steps:
       - task: AzureResourceManagerTemplateDeployment@3
+        displayName: Azure Bicep Deployment`
         inputs:
           deploymentScope: 'Resource Group'
           azureResourceManagerConnection: 'iac-aad-deploy-dev'
