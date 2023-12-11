@@ -18,9 +18,10 @@ jobs:
       - task: AzureResourceManagerTemplateDeployment@3
         displayName: Azure Bicep IaC Deployment
         inputs:
-          deploymentScope: 'Subscription'
+          deploymentScope: 'Resource Group'
           azureResourceManagerConnection: 'iac-aad-deploy-dev'
           subscriptionId: '$(SUB_ID)'
+          action: 'Create Or Update Resource Group'
           location: '$(LOCATION)'
           templateLocation: 'Linked artifact'
           csmFile: './AzureAppService/main.bicep'
