@@ -6,7 +6,7 @@
 trigger: none
 
 variables:
-  RG: 'iac-rg-prod'
+  RG: 'iac-rg-dev'
   LOCATION: 'UK South'
 
 pool:
@@ -14,16 +14,18 @@ pool:
 
 jobs:
   - job: Deploy
+    variables:
+    - group: IaC_Pipeline_Variable
     steps:
       - task: AzureResourceManagerTemplateDeployment@3
         displayName: Azure Bicep Deployment
         inputs:
           deploymentScope: 'Resource Group'
           azureResourceManagerConnection: 'iac-aad-deploy-dev'
-          subscriptionId: '031e997d-b908-4dd0-9dba-c440758aec29'
+          subscriptionId: $(SUB_ID)
           action: 'Create Or Update Resource Group'
-          resourceGroupName: 'iac-rg-dev'
-          location: 'UK South'
+          resourceGroupName: $(RG)
+          location: $(LOCATION)
           templateLocation: 'Linked artifact'
           csmFile: './AzureAppService/main.bicep'
           csmParametersFile: './AzureAppService/main.parameters.json'
