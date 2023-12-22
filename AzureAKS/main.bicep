@@ -30,7 +30,7 @@ module aks './aksCluster.bicep' = {
 
 module rbac './aksRoleAssignment.bicep' = {
   name: 'AksRoleAssignments'
-  scope: resourceGroup(acrName)
+  scope: resourceGroup()
   params: {
      acrName: acrName
      aksKubeletId: aks.outputs.aksKubeletId
