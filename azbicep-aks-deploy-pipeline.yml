@@ -1,0 +1,32 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger: none
+
+variables:
+  RG: 'iac-rg-dev'
+  LOCATION: 'UK South'
+
+pool:
+  vmImage: ubuntu-latest
+
+jobs:
+  - job: Deploy
+    variables:
+    - group: IaC_Pipeline_Variable
+    steps:
+      - task: AzureResourceManagerTemplateDeployment@3
+        displayName: Azure Bicep Deployment
+        inputs:
+          deploymentScope: 'Resource Group'
+          azureResourceManagerConnection: 'iac-aad-deploy-dev'
+          subscriptionId: $(SUB_ID)
+          action: 'Create Or Update Resource Group'
+          resourceGroupName: $(RG)
+          location: $(LOCATION)
+          templateLocation: 'Linked artifact'
+          csmFile: './AzureAKS/main.bicep'
+          csmParametersFile: './AzureAKS/main.parameters.json'
+          deploymentMode: 'Incremental'
