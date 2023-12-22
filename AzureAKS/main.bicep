@@ -13,7 +13,7 @@ param acrName string
 param roleAcrPull string
 
 
-module aks 'AksCluster.bicep' = {
+module aks './aksCluster.bicep' = {
   name: 'AksCluster'
   //scope: rg
   params: {
@@ -28,7 +28,7 @@ module aks 'AksCluster.bicep' = {
   }
 }
 
-module rbac 'aksRoleAssignment.bicep' = {
+module rbac './aksRoleAssignment.bicep' = {
   name: 'AksRoleAssignments'
   scope: resourceGroup(acrName)
   params: {
