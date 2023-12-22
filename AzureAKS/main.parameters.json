@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "aksClusterName": {
-      "value": "uohdaimaks"
+      "value": "uohdaimakseshop"
     },
     "agentCount": {
       "value": 2
@@ -15,7 +15,7 @@
       "value": "SystemAssigned"
     },
     "dnsPrefix": {
-      "value": "uohdaimaks"
+      "value": "uohdaimakseshop"
     },
     "osType": {
       "value": "Linux"
