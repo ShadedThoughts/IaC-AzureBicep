@@ -1,0 +1,30 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "aksClusterName": {
+      "value": "uohdaimaks"
+    },
+    "agentCount": {
+      "value": 2
+    },
+    "agentVMSize": {
+      "value": "Standard_D2s_v3"
+    },
+    "aksManagedIdentity": {
+      "value": "SystemAssigned"
+    },
+    "dnsPrefix": {
+      "value": "uohdaimaks"
+    },
+    "osType": {
+      "value": "Linux"
+    },
+    "acrName": {
+      "value": "uohdaim"
+    },
+    "roleAcrPull": {
+      "value": "AcrPull"
+    }
+  }
+}

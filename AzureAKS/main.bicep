@@ -1,66 +1,39 @@
 param location string = resourceGroup().location
 
-@description('The size of the Virtual Machine.')
-param agentVMSize string = 'Standard_D2s_v3'
+// Parameters for AKS Cluster
+param aksClusterName string
+param agentCount int
+param agentVMSize string
+param aksManagedIdentity string
+param dnsPrefix string
+param osType string
 
-@description('The number of nodes for the cluster. 1 Node is enough for Dev/Test and minimum 3 nodes, is recommended for Production')
-@minValue(1)
-@maxValue(100)
-param agentCount int = 3
+// Parameters for AKS Role Assignment
+param acrName string
+param roleAcrPull string
 
-@description('Disk size (in GiB) to provision for each of the agent pool nodes. This value ranges from 0 to 1023. Specifying 0 will apply the default disk size for that agentVMSize.')
-@minValue(0)
-@maxValue(1023)
-param osDiskSizeGB int = 0
 
-// @description('User name for the Linux Virtual Machines.')
-// param linuxAdminUsername string
+module aks 'AksCluster.bicep' = {
+  name: 'AksCluster'
+  //scope: rg
+  params: {
+    aksClusterName: aksClusterName
+    agentCount: agentCount
+    agentVMSize: agentVMSize
+    aksManagedIdentity: aksManagedIdentity
+    dnsPrefix: dnsPrefix
+    osType: osType
+    location: location
 
-// @description('Configure all linux machines with the SSH RSA public key string. Your key should include three parts, for example \'ssh-rsa AAAAB...snip...UcyupgH azureuser@linuxvm\'')
-// param sshRSAPublicKey string
-
-param aksClusterName string = 'uohdaimaks'
-param aksManagedIdentity string = 'SystemAssigned'
-
-@description('The type of operating system.')
-@allowed([
-  'Linux'
-  'Windows'
-])
-param osType string = 'Linux'
-
-resource aksCluster 'Microsoft.ContainerService/managedClusters@2023-09-01' = {
-  name: aksClusterName
-  location: location
-  identity: {
-    type: aksManagedIdentity
-  }
-  properties: {
-    kubernetesVersion: '1.27.7'
-    dnsPrefix: 'uohdaimaks'
-    enableRBAC: true
-    agentPoolProfiles: [
-      {
-        name: 'agentpool'
-        count: agentCount
-        vmSize: agentVMSize
-        osType: osType
-        osDiskSizeGB: osDiskSizeGB
-        mode: 'System'
-        type: 'VirtualMachineScaleSets'
-      }
-    ]
-    // linuxProfile: {
-    //   adminUsername: linuxAdminUsername
-    //   ssh: {
-    //     publicKeys: [
-    //       {
-    //         keyData: sshRSAPublicKey
-    //       }
-    //     ]
-    //   }
-    // }
   }
 }
 
-output controlPlaneFQDN string = aksCluster.properties.fqdn
+module rbac 'aksRoleAssignment.bicep' = {
+  name: 'AksRoleAssignments'
+  scope: resourceGroup(acrName)
+  params: {
+     acrName: acrName
+     aksKubeletId: aks.outputs.aksKubeletId
+     roleAcrPull: roleAcrPull
+  }
+}
