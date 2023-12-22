@@ -7,6 +7,7 @@ param agentVMSize string
 param aksManagedIdentity string
 param dnsPrefix string
 param osType string
+param acrRG string
 
 // Parameters for AKS Role Assignment
 param acrName string
@@ -30,7 +31,7 @@ module aks './aksCluster.bicep' = {
 
 module rbac './aksRoleAssignment.bicep' = {
   name: 'AksRoleAssignments'
-  scope: resourceGroup()
+  scope: resourceGroup('${acrRG}')
   params: {
      acrName: acrName
      aksKubeletId: aks.outputs.aksKubeletId

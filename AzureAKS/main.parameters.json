@@ -23,6 +23,9 @@
     "acrName": {
       "value": "uohdaim"
     },
+    "acrRG": {
+      "value": "UoH-RG"
+    },
     "builtInRoleType": {
       "value": "AcrPull"
     }
