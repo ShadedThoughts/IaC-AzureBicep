@@ -22,11 +22,11 @@ jobs:
         inputs:
           deploymentScope: 'Resource Group'
           azureResourceManagerConnection: 'iac-aad-deploy-dev'
-          subscriptionId: $(SUB_ID)
+          subscriptionId: '$(SUB_ID)'
           action: 'Create Or Update Resource Group'
-          resourceGroupName: $(RG)
-          location: $(LOCATION)
+          resourceGroupName: '$(RG)'
+          location: '$(LOCATION)'
           templateLocation: 'Linked artifact'
           csmFile: './AzureAKS/main.bicep'
           csmParametersFile: './AzureAKS/main.parameters.json'
-          deploymentMode: 'Incremental'
+          deploymentMode: 'Validation'
