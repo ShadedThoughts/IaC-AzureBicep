@@ -23,7 +23,7 @@
     "acrName": {
       "value": "uohdaim"
     },
-    "roleAcrPull": {
+    "builtInRoleType": {
       "value": "AcrPull"
     }
   }

@@ -10,7 +10,7 @@ param osType string
 
 // Parameters for AKS Role Assignment
 param acrName string
-param roleAcrPull string
+param builtInRoleType string
 
 
 module aks './aksCluster.bicep' = {
@@ -34,6 +34,7 @@ module rbac './aksRoleAssignment.bicep' = {
   params: {
      acrName: acrName
      aksKubeletId: aks.outputs.aksKubeletId
-     roleAcrPull: roleAcrPull
+     //roleAcrPull: roleAcrPull
+     builtInRoleType: builtInRoleType
   }
 }
